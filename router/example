@@ -1,0 +1,15 @@
+import React from "react";
+import Hello from "./Hello";
+import { Router, Route, Switch } from "./libs/router/Routing";
+import Test from "./Test";
+
+export const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route hideNavBar={true} exact path="/" component={Hello} />
+        <Route path="/test" component={Test} />
+      </Switch>
+    </Router>
+  );
+};

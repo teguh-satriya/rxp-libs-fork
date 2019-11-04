@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "Maax Rounded";
+  src: url("MaaxRounded.woff2") format("woff2"),
+    url("MaaxRounded.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Open Sans";
+  src: url("OpenSans.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Rubik";
+  src: url("Rubik.woff2") format("woff2"), url("Rubik.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Varela";
+  src: url("Varela.woff2") format("woff2"), url("Varela.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}

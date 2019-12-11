@@ -6,10 +6,12 @@ import { UIProps, windowHeight, windowWidth } from "./Styles/Style";
 import UIButton from "./UIButton";
 import UIText from "./UIText";
 import IconTimes from "./Icons/IconTimes";
+import IconCheck from './Icons/IconCheck';
 
 interface UIModalWraperProps extends UIProps {
   title?: string;
-  close: () => void;
+  close?: () => void;
+  submit?: () => void;
 }
 
 export default (p: UIModalWraperProps) => {
@@ -64,23 +66,43 @@ export default (p: UIModalWraperProps) => {
             >
               <UIText>{p.title}</UIText>
             </View>
+            {p.submit &&(
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <UIButton
-                fill="clear"
-                size="small"
-                color="primary"
-                onPress={p.close}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-end",
-                  height: 40,
-                  margin: 0
-                }}
-              >
-                <IconTimes width={18} height={18} />
+                  size="small"
+                  color="success"
+                  onPress={p.submit}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    height: 40,
+                    margin: 0,
+                    marginRight: "10px"
+                  }}
+                >
+                  <IconCheck color="#fff" width={18} height={18} /> Submit
               </UIButton>
             </View>
+            )}
+            {p.close && (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <UIButton
+                  size="small"
+                  color="error"
+                  onPress={p.close}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                    height: 40,
+                    margin: 0
+                  }}
+                >
+                <IconTimes color="#fff" width={18} height={18} /> Close
+              </UIButton>
+            </View>
+            )}
           </View>
         )}
         {p.children}

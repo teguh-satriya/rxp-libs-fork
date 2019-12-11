@@ -24,8 +24,6 @@ interface UIJsonTableProps extends UIJsonTableCoreProps {
   renderItems: any;
   rowStyle: ((item: any) => object) | object;
   fields?: UIListFieldsProps;
-  actions?: any;
-  actionsStyle?: any;
 }
 
 export const TableWrapper = (p: UIJsonTableProps) => {
@@ -39,9 +37,7 @@ export const TableWrapper = (p: UIJsonTableProps) => {
     rowAttributes,
     vlistRef,
     vlistProps,
-    rowStyle,
-    actions,
-    actionsStyle
+    rowStyle
   } = p;
   let sortedKeys = sortColumns(
     items.length > 0 ? items[0] : {},
@@ -51,15 +47,7 @@ export const TableWrapper = (p: UIJsonTableProps) => {
   );
 
   const renderRef = useRef((details: VirtualListViewCellRenderDetails<any>) => {
-    return renderItems(
-      details,
-      fields,
-      sortedKeys,
-      rowAttributes,
-      rowStyle,
-      actions,
-      actionsStyle
-    );
+    return renderItems(details, fields, sortedKeys, rowAttributes, rowStyle);
   });
   const ref = vlistRef ? vlistRef : useRef(null as any);
 
@@ -102,7 +90,6 @@ export const TableHeader = (p: UIJsonTableHeaderProps) => {
         const field = fields && fields[i];
         const label = _.get(field, "table.header", i);
 
-        const width: any = _.get(field, `table.width`);
         const visible: any = _.get(field, `table.visible`);
         if (visible === false) return;
 
@@ -114,15 +101,7 @@ export const TableHeader = (p: UIJsonTableHeaderProps) => {
               }
             }}
             key={idx}
-            style={[
-              colStyle,
-              { height: itemHeight || 40 },
-              width && {
-                flexGrow: 0,
-                flexShrink: 0,
-                flexBasis: width
-              }
-            ]}
+            style={[colStyle, { height: itemHeight || 40 }]}
           >
             <UIText style={{ color: "#8898aa", fontWeight: 600 }} size="small">
               {_.upperFirst(label)}
@@ -130,24 +109,6 @@ export const TableHeader = (p: UIJsonTableHeaderProps) => {
           </Button>
         );
       })}
-      {p.actions && (
-        <View
-          style={[
-            colStyle,
-            { height: itemHeight || 40 },
-            {
-              flexGrow: 0,
-              flexShrink: 0,
-              flexBasis: 70
-            },
-            p.actionsStyle
-          ]}
-        >
-          <UIText style={{ color: "#8898aa", fontWeight: 600 }} size="small">
-            #
-          </UIText>
-        </View>
-      )}
     </View>
   );
 };
@@ -157,9 +118,7 @@ export const TableRows = (
   fields: UIListFieldsProps,
   sortedItemKeys?: string[],
   rowAttributes: any = {},
-  rowStyle: ((item: any) => any) | any = {},
-  actions?: any,
-  actionsStyle?: any
+  rowStyle: ((item: any) => any) | any = {}
 ) => {
   const item = { ...details.item };
   const key = item.key;
@@ -177,7 +136,6 @@ export const TableRows = (
   }
 
   const rstyle = typeof rowStyle === "function" ? rowStyle(item) : rowStyle;
-  const ActionComp = actions;
   return (
     <View
       style={[
@@ -196,22 +154,12 @@ export const TableRows = (
             _.get(field, "list.render") || _.get(field, "table.render");
           if (typeof render === "function") return render(item, idx, field);
         }
-        const width = _.get(field, "table.width");
+        const width = _.get(field, "list.width") || _.get(field, "table.width");
         const visible: any = _.get(field, `table.visible`);
         if (visible === false) return;
 
         return (
-          <View
-            style={[
-              colStyle,
-              width && {
-                flexGrow: 0,
-                flexShrink: 0,
-                flexBasis: width
-              }
-            ]}
-            key={idx}
-          >
+          <View style={[colStyle, width ? { width } : {}]} key={idx}>
             {React.isValidElement(item[i]) ? (
               item[i]
             ) : (
@@ -231,23 +179,6 @@ export const TableRows = (
           </View>
         );
       })}
-      {actions && (
-        <View
-          style={[
-            colStyle,
-            {
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              flexGrow: 0,
-              flexShrink: 0,
-              flexBasis: 70
-            },
-            actionsStyle
-          ]}
-        >
-          <ActionComp item={item} />
-        </View>
-      )}
     </View>
   );
 };

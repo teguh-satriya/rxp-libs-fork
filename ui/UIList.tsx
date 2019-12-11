@@ -94,8 +94,6 @@ interface UIListProps extends UIProps {
     items?: any;
   };
   table?: UIListTableProps;
-  actions?: (item: any) => void;
-  actionsStyle?: any;
 }
 
 export interface DetailComponentProps extends UIProps {
@@ -261,6 +259,7 @@ function responsiveComponent(
       wrapper: get(p, "list.wrapper", ListWrapper),
       items: get(p, "list.items", ListItems)
     };
+
     return (
       <List.wrapper
         vlistRef={ref}
@@ -272,8 +271,6 @@ function responsiveComponent(
         fields={p.fields}
         vlistProps={vlistProps}
         maxHeight={List.maxHeight}
-        actions={p.actions}
-        actionsStyle={p.actionsStyle}
       />
     );
   } else {
@@ -316,8 +313,6 @@ function responsiveComponent(
         })}
         vlistProps={vlistProps}
         rowStyle={rowStyle}
-        actions={p.actions}
-        actionsStyle={p.actionsStyle}
       />
     );
   }

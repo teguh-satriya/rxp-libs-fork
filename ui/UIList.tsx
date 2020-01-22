@@ -259,6 +259,15 @@ function responsiveComponent(
       wrapper: get(p, "list.wrapper", ListWrapper),
       items: get(p, "list.items", ListItems)
     };
+    let rowStyle = {};
+    if (p.selectedRowStyle) {
+      rowStyle = (item: any) => {
+        if (data.selected.indexOf(item[p.primaryKey]) >= 0) {
+          return p.selectedRowStyle;
+        }
+        return {};
+      };
+    }
 
     return (
       <List.wrapper
@@ -271,6 +280,7 @@ function responsiveComponent(
         fields={p.fields}
         vlistProps={vlistProps}
         maxHeight={List.maxHeight}
+        rowStyle={rowStyle}
       />
     );
   } else {
@@ -290,6 +300,7 @@ function responsiveComponent(
         return {};
       };
     }
+
     return (
       <Table.wrapper
         vlistRef={ref}

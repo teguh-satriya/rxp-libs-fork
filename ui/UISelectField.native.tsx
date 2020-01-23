@@ -131,6 +131,7 @@ const WebSelectFieldList = (p: UISelectInternalProps) => {
       <ScrollView nestedScrollEnabled={true}>
         <UIJsonList
           style={{ minHeight: 400 }}
+          rowStyle={{}}
           primaryKey="value"
           items={_.uniqBy(
             items.map((i: any) => {

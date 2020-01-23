@@ -129,6 +129,7 @@ const WebSelectFieldList = (p: UISelectInternalProps) => {
       {p.loading && <UIText style={{ padding: 10 }}>Loading...</UIText>}
       <UIJsonList
         primaryKey="value"
+        rowStyle={{}}
         items={_.uniqBy(
           items.map((i: any) => {
             if (typeof i === 'string') {

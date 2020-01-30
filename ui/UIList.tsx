@@ -87,7 +87,7 @@ interface UIListProps extends UIProps {
   };
   detailStyle?: any;
   fields?: UIListFieldsProps;
-  rowAttributes?: any;
+  // rowAttributes?: any;
   list?: {
     itemHeight?: number;
     wrapper?: any;
@@ -154,6 +154,7 @@ export default observer((p: UIListProps) => {
 
   if (props.selection === "detail" || props.selection === "single") {
     vlistProps.onItemSelected = (item: any) => {
+      console.log(item);
       data.selected = [item[p.primaryKey]];
       if (p.onSelect) {
         p.onSelect(item, toJS(data.selected));
@@ -199,10 +200,13 @@ export default observer((p: UIListProps) => {
 
     const dcomp = _.get("props", "detail.component");
     if (dcomp) {
+      console.log("if 1");
       dcomp(detailAttr);
     } else if (props.detailComponent) {
+      console.log("if 2");
       props.detailComponent(detailAttr);
     } else {
+      console.log("if 3");
       DetailComponent({ ...detailAttr });
     }
   }
@@ -224,8 +228,8 @@ function responsiveComponent(
   data: any
 ) {
   let mode: any = p.mode;
-  let rowAttributes = _.get(p, "rowAttributes", {});
-  const selection = _.get(p, "selection", "none");
+  // let rowAttributes = _.get(p, "rowAttributes", {});
+  // const selection = _.get(p, "selection", "none");
 
   if (typeof mode === "object") {
     if (mode[currentMode]) {
@@ -235,18 +239,18 @@ function responsiveComponent(
     }
   }
 
-  if (selection === "detail" || selection === "single") {
-    rowAttributes.onPress = (_e: any, item: any) => {
-      ref.current.selectItemKey(item[p.primaryKey]);
-    };
-  }
+  // if (selection === "detail" || selection === "single") {
+  //   rowAttributes.onPress = (_e: any, item: any) => {
+  //     ref.current.selectItemKey(item[p.primaryKey]);
+  //   };
+  // }
 
-  if (rowAttributes.onPress) {
-    const onPress = rowAttributes.onPress;
-    rowAttributes.onPress = function(e: any) {
-      onPress(e, this);
-    };
-  }
+  // if (rowAttributes.onPress) {
+  //   const onPress = rowAttributes.onPress;
+  //   rowAttributes.onPress = function(e: any) {
+  //     onPress(e, this);
+  //   };
+  // }
 
   if (mode !== "list" && mode !== "table") {
     mode = isSize(["lg", "md"]) ? "table" : "list";
@@ -275,7 +279,7 @@ function responsiveComponent(
         items={p.items}
         primaryKey={p.primaryKey}
         renderItems={List.items}
-        rowAttributes={rowAttributes}
+        // rowAttributes={rowAttributes}
         itemHeight={List.itemHeight}
         fields={p.fields}
         vlistProps={vlistProps}
@@ -309,7 +313,7 @@ function responsiveComponent(
         renderItems={Table.items}
         itemHeight={Table.itemHeight}
         onSort={Table.onSort}
-        rowAttributes={rowAttributes}
+        // rowAttributes={rowAttributes}
         hideUnlisted={Table.hideUnlisted}
         fields={_.mapValues(p.fields, item => {
           const label = _.get(item, `label`);

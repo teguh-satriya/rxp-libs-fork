@@ -77,7 +77,7 @@ export const ListItems = (
   details: VirtualListViewCellRenderDetails<any>,
   fields: UIListFieldsProps,
   sortedItemKeys: string[],
-  rowAttributes: any = {},
+  // rowAttributes: any = {},
   rowStyle: ((item: any) => any) | any = {}
 ) => {
   const item = { ...details.item };
@@ -90,10 +90,9 @@ export const ListItems = (
     sorted = sortColumns(item, fields, "list");
   }
 
-  if (rowAttributes.onPress) {
-    rowAttributes.onPress = rowAttributes.onPress.bind(item);
-  }
-
+  // if (rowAttributes.onPress) {
+  //   rowAttributes.onPress = rowAttributes.onPress.bind(item);
+  // }
   const rstyle = typeof rowStyle === "function" ? rowStyle(item) : rowStyle;
   return (
     <View
@@ -109,7 +108,7 @@ export const ListItems = (
         rstyle
       ]}
       key={key}
-      {...rowAttributes}
+      // {...rowAttributes}
     >
       {sorted.map((i: string, idx: number) => {
         const field = fields && fields[i];

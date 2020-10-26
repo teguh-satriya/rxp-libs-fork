@@ -1,5 +1,5 @@
 import UISelectField from './UISelectField';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UIField, { UIFieldProps } from './UIField';
 import UIText from './UIText';
 import { Button, View } from 'reactxp';
@@ -13,6 +13,9 @@ interface UITagFieldProps extends UIFieldProps {
 
 export default (p: UITagFieldProps) => {
     const [selected, setSelected] = useState<any>([]);
+    const [data, setData] = useState<any>([]);
+    const [_data, _setData] = useState<any>([]);
+
     let fieldStyle = uistyle(`field.field`, { 
         flexWrap:"wrap", 
         borderBottomWidth: 0, 
@@ -22,8 +25,22 @@ export default (p: UITagFieldProps) => {
         padding: 5, 
         minHeight: 40 
     });
-
+    
     p.setValue(selected);
+    
+    const funcSearch = (value: string) => {
+        if (value) {
+            let search = data.filter(
+                (x: any) =>
+                x.value.toLowerCase().includes(value.toLowerCase()) ||
+                x.label.toLowerCase().includes(value.toLowerCase())
+            );
+            _setData([...search]);
+        } else {
+            _setData([...data]);
+        }
+        
+    };
 
     const deleteSelected = (idx: number) => {
         let arr = [...selected];
@@ -31,6 +48,11 @@ export default (p: UITagFieldProps) => {
 
         setSelected(arr);
     }
+    useEffect(() => {
+        setData([...p.items]);
+        _setData([...p.items]);
+    },[p.items]);
+
     return (
         <View>
             <UIField label={p.label} fieldStyle={fieldStyle}>
@@ -44,10 +66,14 @@ export default (p: UITagFieldProps) => {
                     </View>
                 })}
             </UIField>
-            <UISelectField items={p.items} value={""}
+            <UISelectField items={_data} value={""}
                 setValue={(v) => {
                     setSelected([...selected, v]);
-                }}>
+                }}
+                search={true}
+                onSearch = {funcSearch}
+                onDismiss={() => _setData([...data])}
+            >
             </UISelectField>
         </View>
 
